@@ -1,0 +1,58 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ action }} Equipo - Liga{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="page-title">{{ action }} equipo</h2>
+        <p class="page-subtitle">Completa la información del equipo.</p>
+    </div>
+    <a href="{{ url_for('listar_equipos') }}" class="btn btn-ghost">← Volver al listado</a>
+</div>
+
+<div class="card card-form">
+    <form method="post" class="form form-grid">
+        <div class="form-group">
+            <label for="nombre">Nombre del equipo</label>
+            <input id="nombre" type="text" name="nombre" required
+                   value="{{ equipo.nombre if equipo else '' }}"
+                   placeholder="Ej. Deportivo Aurora">
+        </div>
+
+        <div class="form-group">
+            <label for="aforo">Aforo del estadio</label>
+            <input id="aforo" type="number" name="aforo" min="0"
+                   value="{{ equipo.aforo if equipo and equipo.aforo is not none else '' }}"
+                   placeholder="Capacidad de espectadores">
+        </div>
+
+        <div class="form-group">
+            <label for="ano_fundacion">Año de fundación</label>
+            <input id="ano_fundacion" type="number" name="ano_fundacion"
+                   value="{{ equipo.ano_fundacion if equipo and equipo.ano_fundacion is not none else '' }}"
+                   placeholder="Ej. 1998">
+        </div>
+
+        <div class="form-group">
+            <label for="id_presidente">ID Presidente</label>
+            <input id="id_presidente" type="number" name="id_presidente" required
+                   value="{{ equipo.id_presidente if equipo else '' }}"
+                   placeholder="ID existente en la tabla PRESIDENTE">
+        </div>
+
+        <div class="form-group">
+            <label for="id_ubicacion">ID Ubicación</label>
+            <input id="id_ubicacion" type="number" name="id_ubicacion" required
+                   value="{{ equipo.id_ubicacion if equipo else '' }}"
+                   placeholder="ID existente en la tabla UBICACION">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="{{ url_for('listar_equipos') }}" class="btn btn-outline">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

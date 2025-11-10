@@ -1,0 +1,74 @@
+
+{% extends "base.html" %}
+
+{% block title %}Equipos - Liga{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Equipos registrados</h2>
+        <p class="page-subtitle">Listado de equipos, ubicación y aforo del estadio.</p>
+    </div>
+    {% if es_admin %}
+        <a href="{{ url_for('crear_equipo') }}" class="btn btn-primary">
+            ➕ Nuevo equipo
+        </a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="table-wrapper">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Aforo</th>
+                    <th>Año fundación</th>
+                    <th>Departamento</th>
+                    <th>Municipio</th>
+                    {% if es_admin %}
+                        <th class="col-actions">Acciones</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% if equipo %}
+                    {% for eq in equipo %}
+                        <tr>
+                            <td>{{ eq.id_equipo }}</td>
+                            <td class="text-strong">{{ eq.nombre }}</td>
+                            <td>{{ eq.aforo }}</td>
+                            <td>{{ eq.ano_fundacion }}</td>
+                            <td>{{ eq.departamento }}</td>
+                            <td>{{ eq.municipio }}</td>
+
+                            {% if es_admin %}
+                                <td class="col-actions">
+                                    <a href="{{ url_for('editar_equipo', id_equipo=eq.id_equipo) }}"
+                                       class="btn btn-xs btn-ghost">
+                                        Editar
+                                    </a>
+                                    <form action="{{ url_for('eliminar_equipo', id_equipo=eq.id_equipo) }}"
+                                          method="post" class="inline-form"
+                                          onsubmit="return confirm('¿Eliminar este equipo?');">
+                                        <button type="submit" class="btn btn-xs btn-danger">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="{{ 7 if es_admin else 6 }}" class="text-center text-muted">
+                            No hay equipos registrados aún.
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

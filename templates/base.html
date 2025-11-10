@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Liga de Fútbol{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="logo-circle">LF</div>
+                <div>
+                    <h1 class="app-title">Liga de Fútbol</h1>
+                    <p class="app-subtitle">Panel de administración</p>
+                </div>
+            </div>
+            <nav class="topbar-right">
+                {% if session.get("user_id") %}
+                    <span class="user-pill">
+                        <span class="user-name">{{ session.username }}</span>
+                        <span class="user-role">{{ session.role|capitalize }}</span>
+                    </span>
+                    <a href="{{ url_for('listar_equipos') }}" class="btn btn-ghost">Equipos</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline">Cerrar sesión</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+                {% endif %}
+            </nav>
+        </header>
+
+        <main class="main-content">
+            {% with mensajes = get_flashed_messages(with_categories=true) %}
+                {% if mensajes %}
+                    <div class="flash-container">
+                        {% for categoria, msg in mensajes %}
+                            <div class="flash flash-{{ categoria }}">
+                                <span class="flash-label">{{ categoria|upper }}</span>
+                                <span>{{ msg }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            <span>Proyecto de Base de Datos · Liga de Fútbol</span>
+        </footer>
+    </div>
+</body>
+</html>
